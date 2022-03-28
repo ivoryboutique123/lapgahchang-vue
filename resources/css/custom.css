@@ -1,0 +1,40 @@
+.mobile-header__logo img {
+  max-height: 40px;
+}
+
+.product-card__image img{
+  max-height: 100%;
+  max-width: none;
+}
+
+.product-card__image a {
+  display: flex;
+  justify-content: center;
+}
+
+.product-card__image {
+  cursor: pointer;
+}
+
+.product-card__info {
+  cursor: pointer;
+}
+
+.loader-centered {
+  height: 100%;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+
+.modal-mask {
+  position: fixed;
+  z-index: 9998;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .5);
+  display: table;
+  transition: opacity .3s ease;
+}
