@@ -2,7 +2,7 @@
   <div class="login-container">
       <div class="login-container-wrapper">
         <img src="resources/images/lgc_logo_white_slogan.png" alt="">
-        <h2>Sign in</h2>
+        <h2>Register Account</h2>
         <div class="login-form-group">
           <label class="title">Email</label>
           <input required v-model="email" type="email" placeholder="Name" class="form-input"/>
@@ -12,7 +12,7 @@
           <input required v-model="password" type="password" placeholder="Password" class="form-input"/>
         </div>
         <div class="divider"></div>
-        <div class="btn btn-default" @click="login">Login</div>
+        <div class="btn btn-default" @click="register">Register</div>
       </div>
       <loader v-if="$store.state.Loading.loading"></loader>
   </div>
@@ -23,7 +23,7 @@ import storage from '../../commons/constant/storage';
 import Loader from "@/components/Loader";
 
 export default {
-  name: "Login",
+  name: "Register",
   components: {Loader},
   data(){
     return {

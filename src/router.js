@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 import Home from "@/pages/Home.vue";
 import Main from "@/layouts/Main.vue";
 import Login from "@/pages/auth/Login";
+import Register from "@/pages/auth/Register";
 import storage from "@/commons/constant/storage";
 import Detail from "@/pages/product/Detail";
 import Products from "@/pages/product/List";
@@ -230,6 +231,11 @@ const router = new VueRouter({
             path: '/login',
             name: 'login',
             component: Login
+        },
+        {
+            path: '/register',
+            name: 'register',
+            component: Register
         },
         {
             path: '/payment',
