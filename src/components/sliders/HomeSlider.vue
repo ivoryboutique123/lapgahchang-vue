@@ -7,7 +7,7 @@
   >
     <div class="container">
       <div class="row">
-        <div class="col-12 col-lg-9 offset-lg-3">
+        <div class="col-12 col-lg-12">
           <div class="block-slideshow__body">
             <div class="owl-carousel">
               <a class="block-slideshow__slide" href="/products"
