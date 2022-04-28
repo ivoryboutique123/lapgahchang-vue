@@ -1261,6 +1261,7 @@ export default {
           .then(() => {
             this.$store.commit('Auth/SET_AUTH', null);
             localStorage.removeItem(storage.token);
+            location.href = '/';
           })
           .catch(err => console.log(err))
           .finally(() => this.$store.commit('Loading/SET_LOADING', false));

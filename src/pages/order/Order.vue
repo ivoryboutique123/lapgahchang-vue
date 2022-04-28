@@ -21,10 +21,9 @@
             <td v-html="order.shipped_at ? $options.filters.utcDate(order.shipped_at) : ''"></td>
             <td>{{ order.reason }}</td>
             <td>
-              <button class="btn btn-sm btn-info">
-                <router-link to="/order">View</router-link>
-              </button>
-              <button class="btn btn-sm btn-info">View</button>
+                <router-link :to="`/order/${order.id}`">
+                  <button class="btn btn-sm btn-info">View</button>
+                </router-link>
             </td>
           </tr>
         </table>
@@ -38,6 +37,7 @@
         />
       </div>
     </div>
+    <loader v-if="$store.state.Loading.loading"></loader>
   </div>
 
 
@@ -46,10 +46,11 @@
 <script>
 import BreadCrumb from "@/components/headers/BreadCrumb";
 import Pagination from 'vue-pagination-2';
+import Loader from "@/components/Loader";
 
 export default {
   name: "Order",
-  components: { BreadCrumb, Pagination },
+  components: {Loader, BreadCrumb, Pagination },
   data() {
     return {
       page: 1,
@@ -67,6 +68,7 @@ export default {
           .catch((err) => {
             console.log(err);
           })
+          .finally(() => this.$store.commit('Loading/SET_LOADING', false, { root: true }));
     },
     setPage(page) {
       this.page = page;

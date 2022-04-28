@@ -103,6 +103,7 @@
         </div>
       </div>
     </div>
+    <loader v-if="$store.state.Loading.loading"></loader>
   </div>
 
 
@@ -110,10 +111,11 @@
 
 <script>
 import BreadCrumb from "@/components/headers/BreadCrumb";
+import Loader from "@/components/Loader";
 
 export default {
   name: "Order",
-  components: { BreadCrumb },
+  components: {Loader, BreadCrumb },
   props: ['id'],
   mounted() {
     this.getOrder();
@@ -127,6 +129,7 @@ export default {
           .catch((err) => {
             console.log(err);
           })
+          .finally(() => this.$store.commit('Loading/SET_LOADING', false, { root: true }));
     }
   }
 }

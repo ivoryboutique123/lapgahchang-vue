@@ -5,11 +5,28 @@
         <h2>Register Account</h2>
         <div class="login-form-group">
           <label class="title">Email</label>
-          <input required v-model="email" type="email" placeholder="Name" class="form-input"/>
+          <input required v-model="email" type="email" placeholder="Email" class="form-input"/>
+          <span v-if="errors['email']" class="text-danger">{{ errors['email'][0] }}</span>
         </div>
         <div class="login-form-group">
           <label class="title">Password</label>
           <input required v-model="password" type="password" placeholder="Password" class="form-input"/>
+          <span v-if="errors['password']" class="text-danger">{{ errors['password'][0] }}</span>
+        </div>
+        <div class="login-form-group">
+          <label class="title">Password Confirmation</label>
+          <input required v-model="password_confirmation" type="password" placeholder="Password Confirmation" class="form-input"/>
+          <span v-if="errors['password_confirmation']" class="text-danger">{{ errors['password_confirmation'][0] }}</span>
+        </div>
+        <div class="login-form-group">
+          <label class="title">Name</label>
+          <input required v-model="profile.first_name" type="input" placeholder="Name" class="form-input"/>
+          <span v-if="errors['profile.first_name']" class="text-danger">{{ errors['profile.first_name'][0] }}</span>
+        </div>
+        <div class="login-form-group">
+          <label class="title">Mobile</label>
+          <input required v-model="profile.mobile" type="input" placeholder="Mobile" class="form-input"/>
+          <span v-if="errors['profile.mobile']" class="text-danger">{{ errors['profile.mobile'][0] }}</span>
         </div>
         <div class="divider"></div>
         <div class="btn btn-default" @click="register">Register</div>
@@ -19,7 +36,6 @@
 </template>
 
 <script>
-import storage from '../../commons/constant/storage';
 import Loader from "@/components/Loader";
 
 export default {
@@ -29,27 +45,32 @@ export default {
     return {
       email : "",
       password : "",
+      password_confirmation : "",
+      profile: {
+        first_name: "",
+        mobile: ""
+      },
+      errors: {}
     }
   },
   methods: {
-    login() {
+    register() {
+      this.errors = {};
+
       let email = this.email;
       let password = this.password;
+      let password_confirmation = this.password_confirmation;
+      let profile = this.profile;
 
-      this.$store.dispatch('Auth/login', { email, password })
-        .then((res) => {
-          this.$store.commit('Auth/SET_AUTH', res);
+      this.$store.dispatch('Register/register', { email, password, password_confirmation, profile })
+        .then(() => {
+          this.$store.commit('Register/SET_EMAIL', email);
 
-          localStorage.setItem(storage.token, res.token);
-
-          location.href = '/';
+          location.href = '/login';
         })
-        .catch(() => {
-          this.$store.commit('Auth/SET_AUTH', null)
-
-          let token = localStorage.getItem(storage.token);
-          if(token) {
-            localStorage.removeItem(storage.token);
+        .catch((err) => {
+          if(err.response.status === 422) {
+            this.errors = err.response.data.errors;
           }
         })
         .finally(() => this.$store.commit('Loading/SET_LOADING', false, { root: true }));

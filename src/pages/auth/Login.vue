@@ -6,6 +6,7 @@
         <div class="login-form-group">
           <label class="title">Email</label>
           <input required v-model="email" type="email" placeholder="Name" class="form-input"/>
+          <span v-if="errors.length > 0" class="text-danger">{{ errors }}</span>
         </div>
         <div class="login-form-group">
           <label class="title">Password</label>
@@ -13,6 +14,7 @@
         </div>
         <div class="divider"></div>
         <div class="btn btn-default" @click="login">Login</div>
+        <div class="btn btn-default" @click="register()" style="margin-top: 10px;">Register</div>
       </div>
       <loader v-if="$store.state.Loading.loading"></loader>
   </div>
@@ -29,10 +31,19 @@ export default {
     return {
       email : "",
       password : "",
+      errors: {}
     }
   },
+  mounted() {
+    this.email = this.$store.state.Register.email ?? '';
+  },
   methods: {
+    register() {
+      location.href = '/register';
+    },
     login() {
+      this.errors = {};
+
       let email = this.email;
       let password = this.password;
 
@@ -44,12 +55,16 @@ export default {
 
           location.href = '/';
         })
-        .catch(() => {
+        .catch((err) => {
           this.$store.commit('Auth/SET_AUTH', null)
 
           let token = localStorage.getItem(storage.token);
           if(token) {
             localStorage.removeItem(storage.token);
+          }
+
+          if(err.response.status === 401) {
+            this.errors = err.response.data.message;
           }
         })
         .finally(() => this.$store.commit('Loading/SET_LOADING', false, { root: true }));

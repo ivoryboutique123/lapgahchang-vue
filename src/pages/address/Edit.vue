@@ -178,17 +178,15 @@
         <div v-else>No cart to checkout.</div>
       </div>
     </div>
-    <loader v-if="$store.state.Loading.loading"></loader>
   </div>
 </template>
 
 <script>
 import BreadCrumb from "@/components/headers/BreadCrumb";
-import Loader from "@/components/Loader";
-
+// import axios from "axios";
 export default {
   name: "Checkout",
-  components: {Loader, BreadCrumb },
+  components: { BreadCrumb },
   data() {
     return {
       shipping_address: {
@@ -218,9 +216,6 @@ export default {
       errors: {}
     }
   },
-  mounted() {
-    this.getAddresses();
-  },
   methods: {
     submit() {
       this.errors = {};
@@ -248,29 +243,7 @@ export default {
               this.errors = err.response.data.errors;
             }
           });
-    },
-    getAddresses() {
-      this.$store.dispatch('Address/get')
-          .then((res) => {
-            this.$store.commit('Address/SET_ADDRESSES', res);
-            if(this.$store.state.Address.addresses) {
-                this.shipping_address.first_name = this.$store.state.Address.addresses.data[0].first_name;
-                this.shipping_address.last_name = this.$store.state.Address.addresses.data[0].last_name;
-                this.shipping_address.mobile = this.$store.state.Address.addresses.data[0].mobile;
-                this.shipping_address.company = this.$store.state.Address.addresses.data[0].company;
-                this.shipping_address.address_1 = this.$store.state.Address.addresses.data[0].address_1;
-                this.shipping_address.address_2 = this.$store.state.Address.addresses.data[0].address_2;
-                this.shipping_address.city = this.$store.state.Address.addresses.data[0].city;
-                this.shipping_address.state = this.$store.state.Address.addresses.data[0].state;
-                this.shipping_address.country = this.$store.state.Address.addresses.data[0].country;
-                this.shipping_address.postcode = this.$store.state.Address.addresses.data[0].postcode;
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          })
-          .finally(() => this.$store.commit('Loading/SET_LOADING', false, { root: true }));
-    },
+    }
   }
 }
 </script>

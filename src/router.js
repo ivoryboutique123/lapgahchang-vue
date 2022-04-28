@@ -15,6 +15,7 @@ import Order from "@/pages/order/Order";
 import OrderDetail from "@/pages/order/Detail" ;
 import ContactUs from "@/pages/contacts/ContactUs";
 import About from "@/pages/about/About";
+import AddressList from "@/pages/address/List";
 
 Vue.use(VueRouter);
 
@@ -224,7 +225,26 @@ const router = new VueRouter({
                             ]
                         }
                     }
-                }
+                },
+                {
+                    path: '/addresses',
+                    name: 'addresses',
+                    component: AddressList,
+                    beforeEnter: ifAuthenticated,
+                    meta: {
+                        breadCrumb(route) {
+                            return [
+                                {
+                                    text: 'Home',
+                                },
+                                {
+                                    text: route.name,
+                                    to: route.path
+                                }
+                            ]
+                        }
+                    }
+                },
             ],
         },
         {
